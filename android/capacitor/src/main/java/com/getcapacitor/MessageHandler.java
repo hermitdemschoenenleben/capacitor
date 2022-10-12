@@ -123,13 +123,9 @@ public class MessageHandler {
 
             boolean isValidCallbackId = !call.getCallbackId().equals(PluginCall.CALLBACK_ID_DANGLING);
             if (isValidCallbackId) {
-                if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER) && javaScriptReplyProxy != null) {
-                    javaScriptReplyProxy.postMessage(data.toString());
-                } else {
-                    final String runScript = "window.Capacitor.fromNative(" + data.toString() + ")";
-                    final WebView webView = this.webView;
-                    webView.post(() -> webView.evaluateJavascript(runScript, null));
-                }
+                final String runScript = "window.Capacitor.fromNative(" + data.toString() + ")";
+                final WebView webView = this.webView;
+                webView.post(() -> webView.evaluateJavascript(runScript, null));
             } else {
                 bridge.getApp().fireRestoredResult(data);
             }
